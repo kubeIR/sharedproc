@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: osquery-deployment
+  labels:
+    app: osquery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: osquery
+  template:
+    metadata:
+      labels:
+        app: osquery
+    spec:
+      shareProcessNamespace: true
+      containers:
+      - name: nginx
+        image: nginx
+      - name: osquery-exporter
+        image: kubeir/osquery-exporter
+        ports:
+          - containerPort: 5000
