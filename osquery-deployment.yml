@@ -22,3 +22,21 @@ spec:
         image: kubeir/osquery-exporter
         ports:
           - containerPort: 5000
+      - name: sleeper
+        image: docker.io/prateeknischal/sleeper
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+          - name: configmap
+            mountPath: /etc/config.yml
+          - name: dockersock
+            mountPath: "/var/run/docker.sock"
+      volumes:
+      - name: configmap
+        configMap:
+          name: test
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+

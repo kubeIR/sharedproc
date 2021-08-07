@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleeper
+  labels:
+    app: osquery
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: osquery
+  template:
+    metadata:
+      labels:
+        app: osquery
+    spec:
+      containers:
+      - name: sleeper
+        image: sleeper
+        securityContext:
+          privileged: true
+          runAsUser: 0
