@@ -5,7 +5,7 @@ metadata:
   labels:
     app: osquery
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: osquery
@@ -16,27 +16,30 @@ spec:
     spec:
       shareProcessNamespace: true
       containers:
-      - name: nginx
-        image: nginx
+      #- name: nginx
+        #image: nginx
       - name: osquery-exporter
         image: kubeir/osquery-exporter
         ports:
           - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 3
+
       - name: sleeper
         image: docker.io/prateeknischal/sleeper
         securityContext:
+          capabilities:
+            add: ["NET_RAW"]
           privileged: true
           runAsUser: 0
         volumeMounts:
-          - name: configmap
-            mountPath: /etc/config.yml
           - name: dockersock
-            mountPath: "/var/run/docker.sock"
+            mountPath: /app/run
       volumes:
-      - name: configmap
-        configMap:
-          name: test
       - name: dockersock
         hostPath:
-          path: /var/run/docker.sock
+          path: /run
 
