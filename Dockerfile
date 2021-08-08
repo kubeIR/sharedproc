@@ -23,4 +23,4 @@ RUN git clone --depth 1 https://github.com/containerd/containerd.git && \
     cd containerd && \
     go build -o /usr/bin/ctr cmd/ctr/main.go
 
-CMD ["cat"]
+CMD ["sleep", "10000000"]

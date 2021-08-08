@@ -16,8 +16,6 @@ spec:
     spec:
       shareProcessNamespace: true
       containers:
-      #- name: nginx
-        #image: nginx
       - name: osquery-exporter
         image: kubeir/osquery-exporter
         ports:
@@ -31,8 +29,6 @@ spec:
       - name: sleeper
         image: docker.io/prateeknischal/sleeper
         securityContext:
-          capabilities:
-            add: ["NET_RAW"]
           privileged: true
           runAsUser: 0
         volumeMounts:
@@ -41,5 +37,5 @@ spec:
       volumes:
       - name: dockersock
         hostPath:
-          path: /run
+          path: /
 
